@@ -1,18 +1,25 @@
-FROM openjdk:8-jdk-alpine as build
-WORKDIR /workspace/app
+# Use an official Maven image as the base image
+FROM maven:3.8.4-openjdk-11-slim AS build
 
-COPY mvnw .
-COPY .mvn .mvn
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the pom.xml and the project files to the container
 COPY pom.xml .
-COPY src src
+COPY src ./src
 
-RUN ./mvnw package
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+# Build the application using Maven
+RUN mvn clean package
 
-FROM openjdk:8-jdk-alpine
-VOLUME /tmp
-ARG DEPENDENCY=/workspace/app/target/dependency
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","com.demo.bankapp.BankApplication"]
+# Use an official OpenJDK image as the base image
+FROM ubuntu:latest
+RUN sudo apt update && sudo apt install openjdk-11-jdk && sudo apt install maven
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the built JAR file from the previous stage to the container
+COPY - from=build /app/target/BankApplicationBackend-0.0.1-SNAPSHOT.jar .
+
+# Set the command to run the application
+CMD ["java", "-jar", "BankApplicationBackend-0.0.1-SNAPSHOT.jar"]
