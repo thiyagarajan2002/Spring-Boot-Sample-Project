@@ -18,6 +18,12 @@ RUN sudo apt update && sudo apt install openjdk-11-jdk && sudo apt install maven
 # Set the working directory in the container
 WORKDIR /app
 
+#copy the all files
+COPY . /app
+
+# Build the application using Maven
+RUN mvn clean package
+
 # Copy the built JAR file from the previous stage to the container
 COPY - from=build /app/target/BankApplicationBackend-0.0.1-SNAPSHOT.jar .
 
