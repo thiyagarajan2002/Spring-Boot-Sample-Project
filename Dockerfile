@@ -11,9 +11,7 @@ COPY . /app
 
 # Build the application using Maven
 RUN mvn clean package
-
-#copy the jar file
-COPY target/BankApplicationBackend-0.0.1-SNAPSHOT.jar . 
+ 
 
 # Set the command to run the application
-CMD ["java", "-jar", "BankApplicationBackend-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/BankApplicationBackend-0.0.1-SNAPSHOT.jar"]
