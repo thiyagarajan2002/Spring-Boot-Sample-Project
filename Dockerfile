@@ -1,7 +1,7 @@
 
 # Use an official OpenJDK image as the base image
 FROM ubuntu:latest
-RUN  apt update &&  apt install openjdk-11-jdk &&  apt install maven
+RUN  apt update &&  apt install openjdk-11-jdk -y &&  apt install maven -y
 
 # Set the working directory in the container
 WORKDIR /app
