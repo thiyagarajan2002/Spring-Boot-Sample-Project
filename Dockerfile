@@ -13,7 +13,7 @@ COPY . /app
 RUN mvn clean package
 
 #copy the jar file
-COPY /app/target/BankApplicationBackend-0.0.1-SNAPSHOT.jar /app
+COPY target/BankApplicationBackend-0.0.1-SNAPSHOT.jar . 
 
 # Set the command to run the application
 CMD ["java", "-jar", "BankApplicationBackend-0.0.1-SNAPSHOT.jar"]
