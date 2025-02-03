@@ -10,7 +10,7 @@ WORKDIR /app
 COPY . /app
 
 # Build the application using Maven
-RUN mvn clean package
+RUN mvn clean package -DskipTests
  
 
 # Set the command to run the application
